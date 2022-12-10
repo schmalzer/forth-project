@@ -1,4 +1,4 @@
-/inch {72 mul} def
+/sz {40 mul} def
 
 /over {1 index} def
 /2dup {1 index 1 index} def
@@ -8,7 +8,6 @@
     1 1 8 {
         1 1 8 {over exch csq} for
         pop
-        stack
     } for
 } def
 
@@ -47,20 +46,28 @@
     newpath
 
     % go to starting position
-    inch exch inch exch moveto
+    sz exch sz exch moveto
 
     % bottom side
-    1 inch 0 inch rlineto
+    1 sz 0 sz rlineto
 
 	% right side
-    0 inch 1 inch rlineto
+    0 sz 1 sz rlineto
 
     % top side
-    -1 inch 0 inch rlineto
+    -1 sz 0 sz rlineto
 
     % automatically add left side to close path
     closepath
 
+    % store colore
+    gsave
+
+    % draw border with black
+    0 setgray
+    stroke
+
     % fill square
+    grestore
     fill
 } def
