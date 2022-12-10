@@ -1,5 +1,16 @@
 /inch {72 mul} def
+
+/over {1 index} def
 /2dup {1 index 1 index} def
+
+% draw chessboard
+/cb {
+    1 1 8 {
+        1 1 8 {over exch csq} for
+        pop
+        stack
+    } for
+} def
 
 % draw colored square
 % input: row column
