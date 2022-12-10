@@ -7,9 +7,9 @@
     % even --> black / uneven --> white 
     2dup add 2 mod 0 eq {
       % draw 
-      2dup bsq
+        bsq
     } {
-      2dup wsq
+        wsq
     } ifelse 
 } def
 
@@ -17,16 +17,16 @@
 % input: row column
 /bsq {
     % draw a black square
-    1 setgray
-    2dup sq
+    0 setgray
+    sq
 } def
 
 % draw white square
 % input: row column
 /wsq {
     % draw a white square
-    0 setgray
-    2dup sq
+    1 setgray
+    sq
 } def
 
 % draw a square
@@ -50,6 +50,6 @@
     % automatically add left side to close path
     closepath
 
-    % Draw the box on the paper
-    stroke	
+    % fill square
+    fill
 } def
