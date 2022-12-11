@@ -71,3 +71,15 @@
     grestore
     fill
 } def
+
+/pl {
+    0.5 setgray
+    newpath
+    1 x add sz 2 y add sz moveto
+    2 x add sz 1 y add sz lineto
+    1 x add sz 1 y add sz moveto
+    2 x add sz 2 y add sz lineto
+    stroke
+
+
+} def
