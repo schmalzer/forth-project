@@ -83,3 +83,32 @@
 
 
 } def
+
+
+
+/dx [1 2 2 1 -1 -2 -2 -1] def %https://imgur.com/a/NqdFIoo
+/dy [2 1 -1 -2 -2 -1 1 2] def
+
+
+
+/gpm { %get possible moves at current x/y location 
+
+    /moves { 0 } def
+
+    0 1 7 {
+        /i { exch } def
+        
+        0 index
+        dy i get
+        exch
+        dx i get
+
+        dup x add -1 gt exch x add 8 lt and exch
+        dup y add -1 gt exch y add 8 lt and and
+        {
+            moves 1 add /moves exch def
+        } if
+    } for
+    moves
+} def
+
