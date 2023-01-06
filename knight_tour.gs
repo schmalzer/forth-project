@@ -219,8 +219,6 @@
     0.5 setgray
     newpath
     %move to current location
-    x y pstack
-    pop pop
     x sz 60 add y sz 60 add moveto
 
     %draw to next location
