@@ -3,6 +3,17 @@
 /over {1 index} def
 /2dup {1 index 1 index} def
 
+/chessboard [  
+  [0 0 0 0 0 0 0 0]
+  [0 0 0 0 0 0 0 0]
+  [0 0 0 0 0 0 0 0]
+  [0 0 0 0 0 0 0 0]
+  [0 0 0 0 0 0 0 0]
+  [0 0 0 0 0 0 0 0]
+  [0 0 0 0 0 0 0 0]
+  [0 0 0 0 0 0 0 0]
+] def
+
 % draw chessboard
 /cb {
     1 1 8 {
@@ -93,7 +104,7 @@
 /ym {y add} def %y moving
 
 
-/gpmon {  %get possible move count of neighbors
+/gpmon {  %get possible move count of neighbors -- Structure on the stack after this function [[x y moves], [x y moves], ....]
     0 1 7 {
 
         %get loop index
@@ -105,8 +116,12 @@
         dy i get
         y add /y exch def
 
+        %only check the possible moves of at the calculated offset if the offset is within the bounds of the chessboard
+        %and the calculated offset is not visited already
         x -1 gt y -1 gt x 8 lt y 8 lt and and and {
-            gpm
+            isPossibleLocation{
+                gpm
+            } if
         } if
 
 
@@ -125,21 +140,98 @@
     /moves { 0 } def
 
     0 1 7 {
-        /j { exch } def
-        
-        0 index
-        dy j get
-        exch
-        dx j get
+        /j exch def
 
-        dup x add -1 gt exch x add 8 lt and exch
-        dup y add -1 gt exch y add 8 lt and and
+        dx j get
+        x add /x exch def
+        dy j get
+        y add /y exch def
+
+        x -1 gt x 8 lt and
+        y -1 gt y 8 lt and and
         {
-            moves 1 add /moves exch def
-            
-            
+            isPossibleLocation{
+                moves 1 add /moves exch def
+            } if
         } if
+
+        dx j get neg
+        x add /x exch def
+        dy j get neg
+        y add /y exch def
+
     } for
-    y x moves
+    [x y moves]
 } def
+
+/markPositionAsVisited { %marks the current (x,y) of the knight as visited on the chessboard
+    chessboard x get y 1 put
+} def
+
+/isPossibleLocation {
+    chessboard x get y get 0 eq
+} def
+
+/start {
+    cb
+    /nextLocation [8 8 8] def
+
+    63 {
+
+        markPositionAsVisited
+        /minimum 8 def %cannot have more moves than 7 hence minimum is initalized to 8
+        
+        gpmon
+
+        count {
+            dup
+            2 get dup minimum lt { %if current possible move count is less than minimum encountered movecount
+                
+                /minimum exch def
+                /nextLocation exch def
+                
+            }{
+                pop pop %forget current position candidate since minimum is not smaller
+            } ifelse
+
+        } repeat
+
+        % to see the locations step by step comment in the next 3 lines
+        %nextLocation
+        %pstack
+        %pop
+
+        drawLineToLocation
+
+        %update to next position
+        nextLocation dup
+        0 get
+        /x exch def
+        1 get
+        /y exch def
+
+    } repeat
+    
+
+} def
+
+/drawLineToLocation{ %expects nextLocation on top of the stack
+    0.5 setgray
+    newpath
+    %move to current location
+    x y pstack
+    pop pop
+    x sz 60 add y sz 60 add moveto
+
+    %draw to next location
+    nextLocation
+    pstack
+    0 get sz 60 add nextLocation 1 get sz 60 add lineto
+    2 setlinewidth
+    stroke
+}def
+
+
+
+
 
