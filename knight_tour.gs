@@ -89,26 +89,57 @@
 /dx [1 2 2 1 -1 -2 -2 -1] def %https://imgur.com/a/NqdFIoo
 /dy [2 1 -1 -2 -2 -1 1 2] def
 
+/xm {x add} def %x moving
+/ym {y add} def %y moving
 
+
+/gpmon {  %get possible move count of neighbors
+    0 1 7 {
+
+        %get loop index
+        /i exch def
+
+        %add offset to knight to get possible moves at offset 
+        dx i get
+        x add /x exch def
+        dy i get
+        y add /y exch def
+
+        x -1 gt y -1 gt x 8 lt y 8 lt and and and {
+            gpm
+        } if
+
+
+        %set back knight to original position to calculate next offset correctly
+        dx i get neg
+        x add /x exch def
+        dy i get neg
+        y add /y exch def
+
+    } for
+
+} def
 
 /gpm { %get possible moves at current x/y location 
 
     /moves { 0 } def
 
     0 1 7 {
-        /i { exch } def
+        /j { exch } def
         
         0 index
-        dy i get
+        dy j get
         exch
-        dx i get
+        dx j get
 
         dup x add -1 gt exch x add 8 lt and exch
         dup y add -1 gt exch y add 8 lt and and
         {
             moves 1 add /moves exch def
+            
+            
         } if
     } for
-    moves
+    y x moves
 } def
 
