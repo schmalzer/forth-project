@@ -8,6 +8,7 @@
 /dy [0 2 1 -1 -2 -2 -1 1 2] def
 
 % draw chessboard
+% input: n
 /dcb {
     1 1 n {
         1 1 n {over exch csq} for
@@ -146,7 +147,7 @@
         % only check the possible moves of the calculated offset if the offset is within the bounds of the chessboard
         % and the calculated offset is not visited already
         x 0 gt y 0 gt and x n 1 add lt y n 1 add lt and and {
-            pl{
+            nvis{
                 gpm
             } if
         } if
@@ -175,7 +176,7 @@
 
         x 0 gt x n 1 add lt and y 0 gt y n 1 add lt and and
         {
-            pl{
+            nvis{
                 moves 1 add /moves exch def
             } if
         } if
@@ -199,7 +200,7 @@
 
 % check if field was not already visited
 % input: x y
-/pl {
+/nvis {
     cb x -1 add get y -1 add get 0 eq
 } def
 
@@ -236,7 +237,6 @@
 
         % draw the chessboard
         dcb
-        /nl [8 8 8] def
 
         % mark the start square with green
         0 1 0 setrgbcolor
@@ -258,7 +258,7 @@
                 count {
                     dup
                     2 get dup min lt {
-                        %if possible move count is less than minimum encountered movecount
+                        % if possible move count is less than minimum encountered movecount
                         % store position candidate for next move
                         /min exch def
                         /nl exch def
