@@ -90,7 +90,7 @@
 
 % draws line to next position
 % input: nextLocation
-/l2l{ 
+/l2nl{
     0.5 setgray
     newpath
     %move to current location
@@ -230,6 +230,7 @@
 /start {
     % check if n is bigger than x y
     x n 1 add lt y n 1 add lt and{
+        
         % create the chessboard with size n
         ccb
 
@@ -269,7 +270,7 @@
                 } repeat
 
                 % draw line to next position
-                l2l
+                l2nl
 
                 % update to next position
                 nl dup
@@ -287,12 +288,12 @@
                     % mark the end square with red
                     1 0 0 setrgbcolor
                     msq
-                    stop
+                    exit
                 } {
                     (No more moves possible)
                     pstack
                     pop
-                    stop
+                    exit
                 }ifelse                
             }ifelse
         } loop
